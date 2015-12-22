@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    <html>
+        <head>
+            <title>Dashboard</title>
+            <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+            <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+            <link rel="stylesheet" type="text/css" href="main.css">
+            <link rel="stylesheet" type="text/css" href="theme-min.css">
+            <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/knockout/2.2.1/knockout-min.js'></script>
+        </head>
+        <body>
+        <div id="navbar"></div>
+            <ul id="nav">
+                    <!--<li id="navitem"><a href="/index.html">Home</a></li>-->
+                    <li id="navitem"><a href="/index.html">Status</a></li>
+                    <li id="navitem"><a href="/work.html">Work</a></li>
+                    <li id="navitem"><a href="/about.html">About</a></li>
+                    <li id="navitem"><a href="hash.html">MD5</a></li>
+            </ul>
+        </div>
+            <div class="container">
+                <h1 style="color:#16a085">Dashboard</h1>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                	<h3 class="panel-title">Important Info</h3>
+
+                            </div>
+                            <ul class="list-group diff">
+                                <li class="list-group-item"><a href="PASTE A LINK HERE" target="_new"><i class="glyphicon glyphicon-fire"></i> Home Network Protocol</a> - Home Network IPs</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                 <h3 class="panel-title">NAS</h3>
+
+                            </div>
+                            <ul class="list-group">
+                                <li class="list-group-item"><a href="REDACTED" target="_new"><i class="glyphicon glyphicon-hdd"></i> OwnCloud</a> - Access Files Anywhere</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                 <h3 class="panel-title"> Main Network</h3>
+
+                            </div>
+                            <ul class="list-group diff">
+                                <li class="list-group-item"><a href="http://10.0.0.1" target="_new"><i class="glyphicon glyphicon-globe"></i> Xfinity</a> - Modem</li>
+                                <li class="list-group-item"><a href="http://192.168.0.1" target="_new"><i class="glyphicon glyphicon-signal"></i> D-Link Access Point</a> - Router Settings and Controls</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                 <h3 class="panel-title">Status</h3>
+
+                            </div>
+                            <ul class="list-group diff">
+                                <li class="list-group-item">
+                                    <script type='text/javascript'>
+                                        //<![CDATA[
+                                        window.onload = function() {
+                                            function ping(ip, callback) {
+
+                                                if (!this.inUse) {
+                                                    this.status = 'unchecked';
+                                                    this.inUse = true;
+                                                    this.callback = callback;
+                                                    this.ip = ip;
+                                                    var _that = this;
+                                                    this.img = new Image();
+                                                    this.img.onload = function() {
+                                                        _that.inUse = false;
+                                                        _that.callback('responded');
+
+                                                    };
+                                                    this.img.onerror = function(e) {
+                                                        if (_that.inUse) {
+                                                            _that.inUse = false;
+                                                            _that.callback('- Online', e);
+                                                        }
+
+                                                    };
+                                                    this.start = new Date().getTime();
+                                                    this.img.src = "http://" + ip;
+                                                    this.timer = setTimeout(function() {
+                                                        if (_that.inUse) {
+                                                            _that.inUse = false;
+                                                            _that.callback('- Offline');
+                                                        }
+                                                    }, 1500);
+                                                }
+                                            }
+                                            var PingModel = function(servers) {
+                                                var self = this;
+                                                var myServers = [];
+                                                ko.utils.arrayForEach(servers, function(location) {
+                                                    myServers.push({
+                                                        name: location,
+                                                        status: ko.observable('unchecked')
+                                                    });
+                                                });
+                                                self.servers = ko.observableArray(myServers);
+                                                ko.utils.arrayForEach(self.servers(), function(s) {
+                                                    s.status('checking');
+                                                    new ping(s.name, function(status, e) {
+                                                        s.status(status);
+                                                    });
+                                                });
+                                            };
+                                            var komodel = new PingModel([
+                                                'X.com',
+                                                'website.net',
+												                        'localhost',
+                                                'google.com' ]);
+                                            ko.applyBindings(komodel);
+                                        } //]]>
+                                    </script>
+                                    <ul data-bind="foreach:servers">
+                                        <li> <a href="#" data-bind="text:name,attr:{href: 'http://'+name}">tester</a>  <span data-bind="text:status,css:status"></span>
+                                        </li>
+                                    </ul>
+                            </ul>
+                            </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                 <h3 class="panel-title">HP DL380 G5</h3>
+
+                            </div>
+                            <div class="panel-body">2x Quad Core Xeon X5450s, 24GB RAM, iLO2 - FreeNAS</div>
+                            <ul class="list-group diff">
+                                <li class="list-group-item"><a href="http://192.168.0.102" target="_new"><i class="glyphicon glyphicon-console"></i> iLO2</a> - Server Health and Status Management Suite</li>
+                                <li class="list-group-item"><a href="redacted" target="_new"><i class="glyphicon glyphicon-hdd"></i> OwnCloud</a> - Access Files Anywhere</li>
+                                <li class="list-group-item"><a href="redacted" target="_new"><i class="glyphicon glyphicon-save"></i> Transmission</a> - BitTorrent Downloader Web Interface</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                 <h3 class="panel-title">HP DL360 G5</h3>
+
+                            </div>
+                            <div class="panel-body">2x Dual Core Xeon 5130s, 16GB RAM, iLO2 - ESXi 6</div>
+                            <ul class="list-group diff">
+                                <li class="list-group-item"><a href="http://192.168.0.112" target="_new"><i class="glyphicon glyphicon-console"></i> iLO2</a> - Server Health and Status Management Suite</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+
+    </html>
